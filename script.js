@@ -52,7 +52,7 @@ displayBtn.addEventListener("click", () => {
 });
 
 showOriginalBtn.addEventListener("click", () => {
-  console.log("show")
+  console.log("show");
   renderArr(orgArr);
 });
 
@@ -96,6 +96,9 @@ async function startApp(algo) {
       break;
     case "merge":
       await mergesort(arr, 0, arr.length - 1);
+      break;
+    case "selection":
+      await SelectionSort(arr);
       break;
     default:
       break;
@@ -150,6 +153,25 @@ async function quickSort(arr, s, e) {
   let pivot = await findPivot(arr, s, e);
   await quickSort(arr, s, pivot - 1);
   await quickSort(arr, pivot + 1, e);
+}
+
+async function SelectionSort(arr) {
+  let n = arr.length;
+
+  for (let i = 0; i < n - 1; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < n; j++) {
+      if (arr[j] < arr[minIndex]) {
+        minIndex = j;
+      }
+    }
+
+    if (minIndex !== i) {
+      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+      await wait(speed);
+      renderArr(arr);
+    }
+  }
 }
 
 async function merge(arr, s, mid, e) {

@@ -3,23 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Sorting Visualizer</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div>
-      <input type="number" placeholder="enter size of arr" id="size" max="700"/>
-      <button id="display">Display</button>
-      <button id="start-btn">Start Sorting</button>
-      <button id="stop">stop</button>
-      <button id = "ShowOriginalArray">Show Original Array </button> 
-      <select name="" id="algo">
-        <option value="bubble">bubble</option>
-        <option value="merge">merge</option>
-        <option value="quick">quick</option>
-        <option value="count">count</option>
+    <!-- Control Panel -->
+    <div class="controls">
+      <input
+        type="number"
+        placeholder="Enter size of array"
+        id="size"
+        max="700"
+        class="input"
+      />
+      <button id="display" class="btn">Generate Array</button>
+      <button id="start-btn" class="btn">Start Sorting</button>
+      <button id="stop" class="btn">Stop</button>
+      <button id="show-original-btn" class="btn">Show Original Array</button>
+
+      <select id="algo" class="select">
+        <option value="bubble">Bubble Sort</option>
+        <option value="merge">Merge Sort</option>
+        <option value="quick">Quick Sort</option>
+        <option value="count">Count Sort</option>
       </select>
-      <select name="" id="speed">
+
+      <select id="speed" class="select">
         <option value="1">1ms</option>
         <option value="5">5ms</option>
         <option value="10">10ms</option>
@@ -28,8 +37,9 @@
         <option value="100">100ms</option>
         <option value="1000">1000ms</option>
       </select>
-      
     </div>
+
+    <!-- Visualization Container -->
     <div id="container" class="container"></div>
 
     <script src="./script.js"></script>

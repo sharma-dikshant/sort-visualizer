@@ -1,20 +1,21 @@
 const container = document.getElementById("container");
 const startBtn = document.getElementById("start-btn");
-const arrSize = document.getElementById("size");
+const arrSizeEL = document.getElementById("size");
 const displayBtn = document.getElementById("display");
 const speedEl = document.getElementById("speed");
 const algoEl = document.getElementById("algo");
 const stopEl = document.getElementById("stop");
-// const block = document.g;
+const showOriginalBtn = document.getElementById("show-original-btn");
 
 /**
  *      VARIABLES
  */
-
-const arr = [];
+let arr = [];
 let algo = "bubble";
 let speed = 5;
 let isRunning = false;
+let size = 0;
+let orgArr = [];
 /**
  *      EVENT LISTENERS
  */
@@ -32,31 +33,27 @@ speedEl.addEventListener("change", (e) => {
   console.log(speed);
 });
 
-startBtn.addEventListener("click", (e) => {
-  isRunning = true;
-  switch (algo) {
-    case "quick":
-      quickSort(arr, 0, arr.length - 1);
-      break;
-    case "bubble":
-      bubblesort(arr);
-      break;
-    case "merge":
-      mergesort(arr, 0, arr.length - 1);
-      break;
-    default:
-      break;
-  }
+arrSizeEL.addEventListener("change", (e) => {
+  size = +e.target.value;
+});
+
+startBtn.addEventListener("click", async (e) => {
+  if (isRunning) return;
+  populateArr(size);
+  setTimeout(() => {
+    renderArr(arr);
+  }, 1000);
+  startApp(algo);
 });
 
 displayBtn.addEventListener("click", () => {
-  let size = +arrSize.value;
-  size = size > 500 ? 500 : size;
-  while (arr.length < size) {
-    let t = Math.trunc(Math.random() * 10);
-    if (t > 0) arr.push(t);
-  }
+  populateArr(size);
   renderArr(arr);
+});
+
+showOriginalBtn.addEventListener("click", () => {
+  console.log("show")
+  renderArr(orgArr);
 });
 
 /**
@@ -76,6 +73,36 @@ function renderArr(arr, color = "red") {
 
 function wait(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+function populateArr(len) {
+  arr = [];
+  len = len > 500 ? 500 : len;
+  while (arr.length < len) {
+    let t = Math.trunc(Math.random() * 10);
+    if (t > 0) arr.push(t);
+  }
+  orgArr = arr;
+}
+
+async function startApp(algo) {
+  isRunning = true;
+  switch (algo) {
+    case "quick":
+      await quickSort(arr, 0, arr.length - 1);
+      break;
+    case "bubble":
+      await bubblesort(arr);
+      break;
+    case "merge":
+      await mergesort(arr, 0, arr.length - 1);
+      break;
+    default:
+      break;
+  }
+  renderArr(arr, "orange");
+  console.log("completed");
+  isRunning = false;
 }
 
 /**
@@ -121,14 +148,14 @@ async function quickSort(arr, s, e) {
   if (!isRunning) return;
   if (s >= e) return;
   let pivot = await findPivot(arr, s, e);
-  quickSort(arr, s, pivot - 1);
-  quickSort(arr, pivot + 1, e);
+  await quickSort(arr, s, pivot - 1);
+  await quickSort(arr, pivot + 1, e);
 }
 
 async function merge(arr, s, mid, e) {
-  let i = s,
-    j = mid + 1;
-  temp = [];
+  let i = s;
+  let j = mid + 1;
+  let temp = [];
   while (i <= mid && j <= e) {
     if (arr[i] < arr[j]) {
       temp.push(arr[i]);
@@ -153,8 +180,8 @@ async function merge(arr, s, mid, e) {
 async function mergesort(arr, s, e) {
   if (s >= e) return;
 
-  let mid = s + (e - s) / 2;
-  mergesort(arr, s, mid);
-  mergesort(arr, mid + 1, e);
-  merge(arr, s, mid, e);
+  let mid = Math.floor(s + (e - s) / 2);
+  await mergesort(arr, s, mid);
+  await mergesort(arr, mid + 1, e);
+  await merge(arr, s, mid, e);
 }

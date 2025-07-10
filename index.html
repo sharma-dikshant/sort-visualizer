@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div>
+      <input type="number" placeholder="enter size of arr" id="size" max="700"/>
+      <button id="display">Display</button>
+      <button id="start-btn">Start Sorting</button>
+      <button id="stop">stop</button>
+      <button id = "ShowOriginalArray">Show Original Array </button> 
+      <select name="" id="algo">
+        <option value="bubble">bubble</option>
+        <option value="merge">merge</option>
+        <option value="quick">quick</option>
+        <option value="count">count</option>
+      </select>
+      <select name="" id="speed">
+        <option value="1">1ms</option>
+        <option value="5">5ms</option>
+        <option value="10">10ms</option>
+        <option value="20">20ms</option>
+        <option value="50">50ms</option>
+        <option value="100">100ms</option>
+        <option value="1000">1000ms</option>
+      </select>
+      
+    </div>
+    <div id="container" class="container"></div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

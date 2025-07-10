@@ -1,0 +1,23 @@
+/* styles.css */
+.container {
+    padding-top: 10px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 2px;
+    min-height: 80vh;
+    width: 100%;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.block {
+    margin-top: 10px;
+    width: 20px;
+    /* Adjust as needed */
+    background-color: red;
+    transition: height 0.2s;
+}

@@ -52,7 +52,7 @@ displayBtn.addEventListener("click", () => {
 });
 
 showOriginalBtn.addEventListener("click", () => {
-  console.log("show")
+  console.log("show");
   renderArr(orgArr);
 });
 
@@ -96,6 +96,9 @@ async function startApp(algo) {
       break;
     case "merge":
       await mergesort(arr, 0, arr.length - 1);
+      break;
+    case "insertion":
+      await insertionSort(arr);
       break;
     default:
       break;
@@ -184,4 +187,19 @@ async function mergesort(arr, s, e) {
   await mergesort(arr, s, mid);
   await mergesort(arr, mid + 1, e);
   await merge(arr, s, mid, e);
+}
+
+async function insertionSort(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    let j = i - 1;
+    let k = i;
+
+    while (j >= 0 && arr[j] > arr[k]) {
+      [arr[j], arr[k]] = [arr[k], arr[j]];
+      renderArr(arr);
+      await wait(speed);
+      j--;
+      k--;
+    }
+  }
 }

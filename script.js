@@ -5,7 +5,7 @@ const displayBtn = document.getElementById("display");
 const speedEl = document.getElementById("speed");
 const algoEl = document.getElementById("algo");
 const stopEl = document.getElementById("stop");
-const block = document.get;
+// const block = document.g;
 
 /**
  *      VARIABLES

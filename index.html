@@ -19,7 +19,7 @@
       <button id="display" class="btn">Generate Array</button>
       <button id="start-btn" class="btn">Start Sorting</button>
       <button id="stop" class="btn">Stop</button>
-      <button id="show-original-btn" class="btn">Show Original Array</button>
+      <button class="show-original-btn" class="btn">Show Original Array</button>
 
       <select id="algo" class="select">
         <option value="bubble">Bubble Sort</option>
@@ -38,6 +38,12 @@
         <option value="100">100ms</option>
         <option value="1000">1000ms</option>
       </select>
+      <div>
+        <p class="warning-msg">
+          You can't change/generate another array while a sorting algo is
+          running , You may abort the process if you wish
+        </p>
+      </div>
     </div>
 
     <!-- Visualization Container -->

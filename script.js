@@ -6,10 +6,14 @@ const speedEl = document.getElementById("speed");
 const algoEl = document.getElementById("algo");
 const stopEl = document.getElementById("stop");
 const showOriginalBtn = document.getElementById("show-original-btn");
+const controls = document.querySelector(".controls");
+const warningMsg = document.querySelectorAll(".warning-msg");
+const showOrig = document.querySelector(".show-original-btn");
 
 /**
  *      VARIABLES
  */
+let prevArr = [];
 let arr = [];
 let algo = "bubble";
 let speed = 5;
@@ -19,6 +23,14 @@ let orgArr = [];
 /**
  *      EVENT LISTENERS
  */
+
+showOrig.addEventListener("click", () => {
+  // e.preventDefault();
+  if (prevArr.length > 0) {
+    isRunning = false;
+    renderArr(prevArr, "orang");
+  }
+});
 
 stopEl.addEventListener("click", () => {
   isRunning = !isRunning;
@@ -33,13 +45,20 @@ speedEl.addEventListener("change", (e) => {
   console.log(speed);
 });
 
-arrSizeEL.addEventListener("change", (e) => {
-  size = +e.target.value;
+arrSizeEL.addEventListener("change", async (e) => {
+  e.preventDefault();
+  if (isRunning) {
+    // controls.style.marginBottom = "0px";
+    warningMsg.forEach((el) => (el.style.display = "block"));
+    await wait(3000);
+    warningMsg.forEach((el) => (el.style.display = "none"));
+  } else size = +e.target.value;
 });
 
 startBtn.addEventListener("click", async (e) => {
   if (isRunning) return;
   populateArr(size);
+  prevArr = arr;
   setTimeout(() => {
     renderArr(arr);
   }, 1000);
@@ -51,10 +70,10 @@ displayBtn.addEventListener("click", () => {
   renderArr(arr);
 });
 
-showOriginalBtn.addEventListener("click", () => {
-  console.log("show");
-  renderArr(orgArr);
-});
+// showOriginalBtn.addEventListener("click", () => {
+//   console.log("show");
+//   renderArr(orgArr);
+// });
 
 /**
  *      HELPER FUNCTIONS

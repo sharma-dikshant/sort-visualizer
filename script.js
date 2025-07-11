@@ -20,20 +20,23 @@ let speed = 5;
 let isRunning = false;
 let size = 0;
 let orgArr = [];
+let keepRunning = true;
+let stoppedDuringExec = false;
 /**
  *      EVENT LISTENERS
  */
 
 showOrig.addEventListener("click", () => {
-  // e.preventDefault();
   if (prevArr.length > 0) {
     isRunning = false;
-    renderArr(prevArr, "orang");
+    keepRunning = false;
+    renderArr(prevArr, "red");
   }
 });
 
 stopEl.addEventListener("click", () => {
   isRunning = !isRunning;
+  keepRunning = false;
 });
 
 algoEl.addEventListener("change", (e) => {
@@ -57,16 +60,21 @@ arrSizeEL.addEventListener("change", async (e) => {
 
 startBtn.addEventListener("click", async (e) => {
   if (isRunning) return;
-  populateArr(size);
-  prevArr = arr;
+  if (!arr.length) {
+    alert("You need to generate your array first");
+    return;
+  }
+  isRunning = true;
+  keepRunning = true;
   setTimeout(() => {
     renderArr(arr);
   }, 1000);
-  startApp(algo);
+  await startApp(algo);
 });
 
 displayBtn.addEventListener("click", () => {
   populateArr(size);
+  prevArr = [...arr];
   renderArr(arr);
 });
 
@@ -96,14 +104,15 @@ function wait(time) {
 
 function populateArr(len) {
   arr = [];
-  len = len > 500 ? 500 : len;
+
+  if (!len) len = 20;
+  len = len > 500 ? 200 : len;
   while (arr.length < len) {
     let t = Math.trunc(Math.random() * 10);
     if (t > 0) arr.push(t);
   }
-  orgArr = arr;
+  // orgArr = [...arr];
 }
-
 async function startApp(algo) {
   isRunning = true;
   switch (algo) {
@@ -125,6 +134,7 @@ async function startApp(algo) {
     default:
       break;
   }
+  keepRunning = true;
   renderArr(arr, "orange");
   console.log("completed");
   isRunning = false;
@@ -133,18 +143,17 @@ async function startApp(algo) {
 /**
  *      SORTING LOGIC
  */
-
 async function bubblesort(arr) {
   isRunning = true;
   let n = arr.length;
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n - i - 1; j++) {
-      if (!isRunning) return;
+      while (!isRunning) await wait(10);
       if (arr[j] > arr[j + 1]) {
         let temp = arr[j];
         arr[j] = arr[j + 1];
         arr[j + 1] = temp;
-        renderArr(arr);
+        if (keepRunning) renderArr(arr);
         await wait(speed);
       }
     }
@@ -156,6 +165,7 @@ async function findPivot(arr, s, e) {
   let idx = s;
 
   for (let i = s; i < e; i++) {
+    while (!isRunning) await wait(10);
     if (arr[i] < pivotEl) {
       [arr[i], arr[idx]] = [arr[idx], arr[i]];
       idx++;
@@ -169,9 +179,12 @@ async function findPivot(arr, s, e) {
   await wait(speed);
   return idx;
 }
+
 async function quickSort(arr, s, e) {
-  if (!isRunning) return;
+  if (!keepRunning) return;
   if (s >= e) return;
+  while (!isRunning) await wait(10);
+
   let pivot = await findPivot(arr, s, e);
   await quickSort(arr, s, pivot - 1);
   await quickSort(arr, pivot + 1, e);
@@ -179,15 +192,14 @@ async function quickSort(arr, s, e) {
 
 async function SelectionSort(arr) {
   let n = arr.length;
-
   for (let i = 0; i < n - 1; i++) {
     let minIndex = i;
     for (let j = i + 1; j < n; j++) {
+      while (!isRunning) await wait(10);
       if (arr[j] < arr[minIndex]) {
         minIndex = j;
       }
     }
-
     if (minIndex !== i) {
       [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
       await wait(speed);
@@ -200,7 +212,9 @@ async function merge(arr, s, mid, e) {
   let i = s;
   let j = mid + 1;
   let temp = [];
+
   while (i <= mid && j <= e) {
+    while (!isRunning) await wait(10);
     if (arr[i] < arr[j]) {
       temp.push(arr[i]);
       i++;
@@ -215,6 +229,7 @@ async function merge(arr, s, mid, e) {
 
   let k = 0;
   for (let x = s; x <= e; x++) {
+    while (!isRunning) await wait(10);
     arr[x] = temp[k++];
     renderArr(arr);
     await wait(speed);
@@ -222,7 +237,8 @@ async function merge(arr, s, mid, e) {
 }
 
 async function mergesort(arr, s, e) {
-  if (s >= e) return;
+  if (s >= e || !keepRunning) return;
+  while (!isRunning) await wait(10);
 
   let mid = Math.floor(s + (e - s) / 2);
   await mergesort(arr, s, mid);
@@ -236,6 +252,7 @@ async function insertionSort(arr) {
     let k = i;
 
     while (j >= 0 && arr[j] > arr[k]) {
+      while (!isRunning) await wait(10);
       [arr[j], arr[k]] = [arr[k], arr[j]];
       renderArr(arr);
       await wait(speed);

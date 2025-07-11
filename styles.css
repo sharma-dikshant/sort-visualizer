@@ -93,6 +93,10 @@ input[type="number"]::placeholder {
   color: #888;
 }
 
+.result{
+  opacity: 0;
+}
+
 /* Buttons */
 button {
   background-color: #222;

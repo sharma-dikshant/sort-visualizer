@@ -13,6 +13,9 @@ const showOrig = document.querySelector(".show-original-btn");
 /**
  *      VARIABLES
  */
+
+let startTime;
+let finishTime;
 let prevArr = [];
 let arr = [];
 let algo = "bubble";
@@ -22,6 +25,9 @@ let stoppedDuringExec = false;
 let currentlyWorking = false;
 let keepRunning = true;
 let displayOrigArray = false;
+let arraySorted = false;
+// const beep = new Audio("beep.mp3");
+// console.log(beep);
 /**
  *      EVENT LISTENERS
  */
@@ -36,6 +42,11 @@ showOrig.addEventListener("click", (e) => {
     displayOrigArray = true;
   }
 });
+
+// function playBeep() {
+//   beep.currentTime = 0;
+//   beep.play();
+// }
 
 stopEl.addEventListener("click", (e) => {
   e.preventDefault();
@@ -54,7 +65,7 @@ algoEl.addEventListener("change", (e) => {
 
 speedEl.addEventListener("change", (e) => {
   speed = +e.target.value;
-  console.log(speed);
+  // console.log(speed);
 });
 
 arrSizeEL.addEventListener("change", async (e) => {
@@ -79,6 +90,7 @@ startBtn.addEventListener("click", async (e) => {
     return;
   }
   currentlyWorking = true;
+  startTime = Date.now();
   await startApp(algo);
   currentlyWorking = false;
 });
@@ -100,7 +112,7 @@ displayBtn.addEventListener("click", (e) => {
  */
 
 function renderArr(arr, color = "red") {
-  console.log(arr === prevArr);
+  // console.log(arr === prevArr);
   container.innerHTML = "";
   for (let h of arr) {
     const block = document.createElement("div");
@@ -145,6 +157,20 @@ async function startApp(algo) {
     default:
       break;
   }
+  if (arraySorted) {
+    finishTime = Date.now();
+    const controlsHtmlContent = controls.innerHTML;
+    controls.innerHTML = "";
+    controls.innerHTML = `
+  <p class = "sort-time"> Total time required in sorting array of size ${size} by ${
+      algo[0].toUpperCase() + algo.slice(1)
+    } sort is
+  ${((finishTime - startTime) / 1000).toFixed(2)} sec</p>
+  `;
+    setTimeout(() => {
+      controls.innerHTML = controlsHtmlContent;
+    }, 3000);
+  }
 }
 
 /**
@@ -180,6 +206,7 @@ async function bubblesort(arr) {
       }
     }
   }
+  arraySorted = true;
 }
 
 async function findPivot(arr, s, e) {
@@ -218,6 +245,7 @@ async function quickSort(arr, s, e) {
   let pivot = await findPivot(arr, s, e);
   await quickSort(arr, s, pivot - 1);
   await quickSort(arr, pivot + 1, e);
+  arraySorted = true;
 }
 
 async function SelectionSort(arr) {
@@ -241,6 +269,7 @@ async function SelectionSort(arr) {
       renderArr(arr);
     }
   }
+  arraySorted = true;
 }
 
 async function merge(arr, s, mid, e) {
@@ -282,6 +311,7 @@ async function mergesort(arr, s, e) {
   await mergesort(arr, s, mid);
   await mergesort(arr, mid + 1, e);
   await merge(arr, s, mid, e);
+  arraySorted = true;
 }
 
 async function insertionSort(arr) {
@@ -303,4 +333,5 @@ async function insertionSort(arr) {
       k--;
     }
   }
+  arraySorted = true;
 }

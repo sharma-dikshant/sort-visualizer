@@ -97,6 +97,19 @@ input[type="number"]::placeholder {
   opacity: 0;
 }
 
+.sort-time {
+  background-color: #e0f7fa; /* Light cyan */
+  color: #006064;            /* Deep teal text */
+  font-size: 1.1rem;
+  padding: 10px 15px;
+  margin-top: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
 /* Buttons */
 button {
   background-color: #222;
